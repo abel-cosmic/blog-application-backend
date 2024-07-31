@@ -23,6 +23,7 @@ model User {
   updatedAt     DateTime       @updatedAt
   blogs         Blog[]
   subscriptions Subscription[]
+  registrations Registration[]
 }
 
 model Blog {
@@ -54,6 +55,26 @@ model Notification {
   content   String
   recipient String
   createdAt DateTime         @default(now())
+}
+
+model Event {
+  id            Int            @id @default(autoincrement())
+  title         String
+  description   String
+  location      String
+  date          DateTime
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  registrations Registration[]
+}
+
+model Registration {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  userId    Int
+  eventId   Int
+  user      User     @relation(fields: [userId], references: [id])
+  event     Event    @relation(fields: [eventId], references: [id])
 }
 
 enum Role {
