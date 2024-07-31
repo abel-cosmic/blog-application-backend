@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
-import AppError from "../../utils/error/app-error"; // Ensure correct import
+import AppError, { NotFoundError } from "../../utils/error/app-error";
 import {
   createUser,
   deleteUser,
   getAllUsers,
+  getUserById,
   updateUser,
 } from "../../services/user";
 
@@ -25,7 +26,7 @@ export const updateUserController = async (
   res: Response
 ): Promise<void> => {
   try {
-    const userId = Number(req.params.id); // Ensure ID is a number
+    const userId = Number(req.params.id);
     const user = await updateUser(userId, req.body);
     res.status(200).json(user);
   } catch (error) {
@@ -39,7 +40,7 @@ export const deleteUserController = async (
   res: Response
 ): Promise<void> => {
   try {
-    const userId = Number(req.params.id); // Ensure ID is a number
+    const userId = Number(req.params.id);
     const user = await deleteUser(userId);
     res.status(200).json(user);
   } catch (error) {
@@ -57,5 +58,24 @@ export const getAllUsersController = async (
     res.status(200).json(users);
   } catch (error) {
     res.status(500).json("Error retrieving users");
+  }
+};
+
+export const getUserByIdController = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const user = await getUserById(Number(req.params.id));
+    if (!user) {
+      throw new NotFoundError(`User with id: ${req.params.id} not found`);
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    if (error instanceof AppError) {
+      res.status(error.statusCode).json({ message: error.message });
+    } else {
+      res.status(500).json({ message: "An unexpected error occurred" });
+    }
   }
 };

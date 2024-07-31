@@ -1,11 +1,15 @@
-import express, { Router } from "express";
+import { Router } from "express";
 import {
   createUserController,
   deleteUserController,
   getAllUsersController,
+  getUserByIdController,
   updateUserController,
 } from "../../controller/user";
-const routes: Router = express.Router();
+import { hasRole, Role } from "../../middleware/role";
+
+const router = Router();
+
 /**
  * @swagger
  * /users:
@@ -39,7 +43,7 @@ const routes: Router = express.Router();
  *                     type: string
  *                     format: date-time
  */
-routes.get("/users", getAllUsersController);
+router.get("/", getAllUsersController);
 
 /**
  * @swagger
@@ -66,7 +70,30 @@ routes.get("/users", getAllUsersController);
  *       201:
  *         description: User created
  */
-routes.post("users/", createUserController);
+router.post("/", hasRole(Role.USER), createUserController);
+
+/**
+ * @swagger
+ * /users/{id}:
+ *   get:
+ *     summary: Get a user by ID
+ *     description: Retrieve a user by their ID
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID of the user to retrieve
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: User details
+ *       404:
+ *         description: User not found
+ */
+router.get("/:id", getUserByIdController);
 
 /**
  * @swagger
@@ -102,7 +129,7 @@ routes.post("users/", createUserController);
  *       404:
  *         description: User not found
  */
-routes.put("users/:id", updateUserController);
+router.put("/:id", updateUserController);
 
 /**
  * @swagger
@@ -125,6 +152,6 @@ routes.put("users/:id", updateUserController);
  *       404:
  *         description: User not found
  */
-routes.delete("users/:id", deleteUserController);
+router.delete("/:id", deleteUserController);
 
-export default routes;
+export default router;

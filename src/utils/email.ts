@@ -1,31 +1,11 @@
-import nodemailer from "nodemailer";
+import transporter from "../config/nodemailer";
 
-// Load environment variables from .env file
-import dotenv from "dotenv";
-dotenv.config();
-
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false, // true for 465, false for other ports
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASSWORD,
-  },
-});
-
-export const sendEmail = async (
-  to: string,
-  subject: string,
-  text: string,
-  html: string
-) => {
+export const sendEmail = async (to: string, subject: string, html: string) => {
   try {
     const info = await transporter.sendMail({
       from: process.env.EMAIL_FROM,
       to,
       subject,
-      text,
       html,
     });
 
@@ -34,3 +14,7 @@ export const sendEmail = async (
     console.error("Error sending email: %s", error);
   }
 };
+
+//TODO: Make an html template for registration
+//TODO: Make an html template for password reset
+//TODO: Make an html template for new blog posts
