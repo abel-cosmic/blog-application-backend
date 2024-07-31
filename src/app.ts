@@ -1,27 +1,40 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express, NextFunction, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
-import { createError } from "./utils/error/error";
+import swaggerUi from "swagger-ui-express";
+import swaggerJsdoc from "swagger-jsdoc";
+import swaggerOptions from "./config/swagger";
+import bodyParser from "body-parser";
+import AppError from "./utils/error/app-error";
+import userRouter from "./api/user/user";
+import { errorHandler } from "./middleware/error-handler";
 
 dotenv.config();
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
 
+// Initialize Swagger
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 app.use(morgan("dev"));
 app.use(helmet());
-app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-app.all("*", async (req, res) => {
-  throw createError(ErrorTypes.NOT_FOUND_ERROR);
-});
+app.use(cors({ origin: "*", credentials: true }));
+
+// Error handling middleware
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`⚡️Server is running at http://localhost:${port}`);
 });
+app.use("/api/users", userRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");

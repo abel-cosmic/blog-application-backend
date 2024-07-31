@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
-interface CustomRequest extends Request {
-  user?: JwtPayload;
+export interface CustomRequest extends Request {
+  user?: JwtPayload & { role: "ADMIN" | "USER" }; // Add role to JwtPayload
 }
 
 export const auth = async (
@@ -18,19 +18,14 @@ export const auth = async (
       return res.status(401).json({ msg: "No token, auth denied!" });
     }
 
-    const decoded = jwt.verify(token, supabaseSecret) as JwtPayload;
+    const decoded = jwt.verify(token, supabaseSecret) as JwtPayload & {
+      role: "ADMIN" | "USER";
+    };
 
     if (!decoded) {
       return res
         .status(401)
         .json({ msg: "Token verification failed, auth denied!" });
-    }
-
-    // Assuming the decoded token contains user role information
-    if (decoded.role !== "admin" && decoded.role !== "user") {
-      return res
-        .status(403)
-        .json({ msg: "Access denied, insufficient permissions!" });
     }
 
     // Attach the decoded token to the request object
