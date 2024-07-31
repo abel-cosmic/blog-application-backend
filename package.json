@@ -19,7 +19,11 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
+    "@prisma/client": "^5.17.0",
     "concurrently": "^8.2.2",
     "dotenv": "^16.4.5",
     "express": "^4.19.2"
