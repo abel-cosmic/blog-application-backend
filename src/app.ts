@@ -1,4 +1,4 @@
-import express, { Express, NextFunction, Request, Response } from "express";
+import express, { Express, Request, Response } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import helmet from "helmet";
@@ -7,9 +7,11 @@ import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerOptions from "./config/swagger";
 import bodyParser from "body-parser";
-import AppError from "./utils/error/app-error";
 import userRouter from "./api/user/user";
+import blogRoutes from "./api/blog/blog";
 import { errorHandler } from "./middleware/error-handler";
+import path from "path";
+import { auth } from "./middleware/auth";
 
 dotenv.config();
 
@@ -27,6 +29,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(cors({ origin: "*", credentials: true }));
+// Serve static files from the 'uploads' directory
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // Error handling middleware
 app.use(errorHandler);
@@ -35,6 +39,7 @@ app.listen(port, () => {
   console.log(`⚡️Server is running at http://localhost:${port}`);
 });
 app.use("/api/users", userRouter);
+app.use("/api/blogs", auth, blogRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");
