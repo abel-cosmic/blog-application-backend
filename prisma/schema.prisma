@@ -73,9 +73,3 @@ enum Role {
   USER
   ADMIN
 }
-
-enum NotificationType {
-  SUBSCRIPTION
-  NEW_BLOG_POST
-  EVENT_REGISTRATION
-}
