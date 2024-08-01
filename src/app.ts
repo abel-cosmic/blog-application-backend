@@ -9,9 +9,10 @@ import swaggerOptions from "./config/swagger";
 import bodyParser from "body-parser";
 import userRouter from "./api/user/user";
 import blogRoutes from "./api/blog/blog";
+import authRoutes from "./api/auth/auth";
 import { errorHandler } from "./middleware/error-handler";
 import path from "path";
-import { auth } from "./middleware/auth";
+import { authMiddleware } from "./middleware/auth";
 
 dotenv.config();
 
@@ -39,7 +40,8 @@ app.listen(port, () => {
   console.log(`⚡️Server is running at http://localhost:${port}`);
 });
 app.use("/api/users", userRouter);
-app.use("/api/blogs", auth, blogRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/blogs", authMiddleware, blogRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");

@@ -6,7 +6,8 @@ import {
   getUserByIdController,
   updateUserController,
 } from "../../controller/user";
-import { hasRole, Role } from "../../middleware/role";
+import { roleMiddleware } from "../../middleware/role";
+import { Role } from "@prisma/client";
 
 const router = Router();
 
@@ -70,7 +71,7 @@ router.get("/", getAllUsersController);
  *       201:
  *         description: User created
  */
-router.post("/", hasRole(Role.USER), createUserController);
+router.post("/", roleMiddleware(Role.USER), createUserController);
 
 /**
  * @swagger
