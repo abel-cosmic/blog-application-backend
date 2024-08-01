@@ -5,7 +5,7 @@ import { Request } from "express";
 
 const storage = multer.diskStorage({
   destination: (req: Request, file, cb) => {
-    cb(null, "uploads/images"); // Define the destination directory
+    cb(null, "uploads/images");
   },
   filename: (req: Request, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -35,6 +35,6 @@ const fileFilter = (
 
 export const upload = multer({
   storage,
-  limits: { fileSize: 1024 * 1024 * 5 }, // 5MB limit
+  limits: { fileSize: 1024 * 1024 * 5 },
   fileFilter,
 });

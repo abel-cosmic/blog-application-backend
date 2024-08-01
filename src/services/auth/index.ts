@@ -102,23 +102,16 @@ export const resetPasswordService = async (
   newPassword: string
 ): Promise<void> => {
   try {
-    // Verify the reset token
     const decoded = jwt.verify(
       token,
       process.env.SUPABASE_JWT_SECRET!
     ) as jwt.JwtPayload;
     const userId = decoded.id;
-
-    // Find the user
     const user = await prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
       throw new AppError("User not found", 404);
     }
-
-    // Hash the new password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-
-    // Update the user's password
     await prisma.user.update({
       where: { id: userId },
       data: { password: hashedPassword },

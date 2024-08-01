@@ -23,7 +23,7 @@ const swaggerDefinition = {
 
 const swaggerOptions: Options = {
   swaggerDefinition,
-  apis: ["./src/api/**/*.ts"], // Path to the API docs
+  apis: ["./src/api/**/*.ts"],
 };
 
 export default swaggerOptions;

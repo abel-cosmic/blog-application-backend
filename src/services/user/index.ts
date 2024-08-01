@@ -1,4 +1,3 @@
-// src/services/user/index.ts
 import { User } from "@prisma/client";
 import prisma from "../../config/prisma";
 import AppError from "../../utils/error/app-error";

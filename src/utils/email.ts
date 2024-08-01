@@ -14,7 +14,3 @@ export const sendEmail = async (to: string, subject: string, html: string) => {
     console.error("Error sending email: %s", error);
   }
 };
-
-//TODO: Make an html template for registration
-//TODO: Make an html template for password reset
-//TODO: Make an html template for new blog posts

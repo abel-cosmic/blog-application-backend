@@ -37,7 +37,7 @@ export const getRegistrationTemplate = (
           .footer {
             text-align: center;
             font-size: 12px;
-            color: #777;
+            color: #2e2e2e;
           }
         </style>
       </head>
@@ -92,10 +92,10 @@ export const getPasswordResetTemplate = (
           .footer {
             text-align: center;
             font-size: 12px;
-            color: #777;
+            color: #2e2e2e;
           }
           .button {
-            background-color: #007bff;
+            background-color: #2e2e2e;
             color: white;
             padding: 10px 20px;
             text-align: center;

@@ -1,4 +1,3 @@
-// src/services/blog/index.ts
 import { Blog } from "@prisma/client";
 import prisma from "../../config/prisma";
 import AppError from "../../utils/error/app-error";

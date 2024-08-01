@@ -1,9 +1,6 @@
-import { Request, Response, NextFunction } from "express";
+import { Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
-
-export interface CustomRequest extends Request {
-  user?: JwtPayload & { role: "ADMIN" | "USER" };
-}
+import { CustomRequest } from "../types/middleware";
 
 export const authMiddleware = async (
   req: CustomRequest,
