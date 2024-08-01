@@ -48,3 +48,12 @@ export const deleteSubscriptionService = async (
     where: { email },
   });
 };
+
+export const getAllSubscriptionsService = async (): Promise<Subscription[]> => {
+  try {
+    const subscriptions = await prisma.subscription.findMany();
+    return subscriptions;
+  } catch (error) {
+    throw new AppError("Error retrieving subscriptions", 500);
+  }
+};
