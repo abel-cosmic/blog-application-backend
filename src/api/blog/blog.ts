@@ -1,4 +1,3 @@
-// blogRoutes.ts
 import { Router } from "express";
 import {
   createBlogController,

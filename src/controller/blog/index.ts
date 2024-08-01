@@ -1,4 +1,3 @@
-// blogController.ts
 import { Request, Response } from "express";
 import {
   createBlog,
@@ -34,7 +33,7 @@ export const createBlogController = async (req: Request, res: Response) => {
   try {
     const { title, description, content, link, location, date, authorId } =
       req.body;
-    const image = req.file?.path || ""; // Use the uploaded image path
+    const image = req.file?.path || "";
     const blog = await createBlog({
       title,
       description,
@@ -55,7 +54,7 @@ export const updateBlogController = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
     const { title, description, content, link, location, date } = req.body;
-    const image = req.file?.path || ""; // Use the uploaded image path if available
+    const image = req.file?.path || "";
     const blog = await updateBlog(Number(id), {
       title,
       description,

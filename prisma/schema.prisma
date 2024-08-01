@@ -49,14 +49,6 @@ model Subscription {
   user      User?    @relation(fields: [userId], references: [id])
 }
 
-model Notification {
-  id        Int              @id @default(autoincrement())
-  type      NotificationType
-  content   String
-  recipient String
-  createdAt DateTime         @default(now())
-}
-
 model Event {
   id            Int            @id @default(autoincrement())
   title         String
