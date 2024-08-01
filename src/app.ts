@@ -9,6 +9,7 @@ import swaggerOptions from "./config/swagger";
 import bodyParser from "body-parser";
 import userRouter from "./api/user/user";
 import blogRoutes from "./api/blog/blog";
+import eventRoutes from "./api/event/event";
 import subscriptionRoutes from "./api/subscription/subscription";
 import authRoutes from "./api/auth/auth";
 import { errorHandler } from "./middleware/error-handler";
@@ -45,6 +46,7 @@ app.use("/api/users", userRouter);
 app.use("/api/auth", authRoutes);
 app.use("/api/blogs", blogRoutes);
 app.use("/api/subscriptions", subscriptionRoutes);
+app.use("/api/events", eventRoutes);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");

@@ -1,29 +1,28 @@
 import { Router } from "express";
-import {
-  createBlogController,
-  deleteBlogController,
-  getAllBlogsController,
-  getBlogByIdController,
-  updateBlogController,
-} from "../../controller/blog";
-import { upload } from "../../config/multer";
 import { authMiddleware } from "../../middleware/auth";
 import { roleMiddleware } from "../../middleware/role";
 import { Role } from "@prisma/client";
+import {
+  createEventController,
+  deleteEventController,
+  getAllEventsController,
+  getEventByIdController,
+  updateEventController,
+} from "../../controller/event";
 
 const router = Router();
 
 /**
  * @swagger
- * /blogs:
+ * /events:
  *   get:
- *     summary: Get all blogs
- *     description: Retrieve a list of all blogs
+ *     summary: Get all events
+ *     description: Retrieve a list of all events
  *     tags:
- *       - Blogs
+ *       - Events
  *     responses:
  *       200:
- *         description: List of blogs
+ *         description: List of events
  *         content:
  *           application/json:
  *             schema:
@@ -37,12 +36,6 @@ const router = Router();
  *                     type: string
  *                   description:
  *                     type: string
- *                   content:
- *                     type: string
- *                   image:
- *                     type: string
- *                   link:
- *                     type: string
  *                   location:
  *                     type: string
  *                   date:
@@ -54,59 +47,50 @@ const router = Router();
  *                   updatedAt:
  *                     type: string
  *                     format: date-time
- *                   authorId:
- *                     type: integer
  */
-router.get("/", getAllBlogsController);
+router.get("/", getAllEventsController);
 
 /**
  * @swagger
- * /blogs/{id}:
+ * /events/{id}:
  *   get:
- *     summary: Get a blog by ID
- *     description: Retrieve a blog by its ID
+ *     summary: Get an event by ID
+ *     description: Retrieve an event by its ID
  *     tags:
- *       - Blogs
+ *       - Events
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
- *         description: ID of the blog to retrieve
+ *         description: ID of the event to retrieve
  *         schema:
  *           type: integer
  *     responses:
  *       200:
- *         description: Blog details
+ *         description: Event details
  *       404:
- *         description: Blog not found
+ *         description: Event not found
  */
-router.get("/:id", getBlogByIdController);
+router.get("/:id", getEventByIdController);
 
 /**
  * @swagger
- * /blogs:
+ * /events:
  *   post:
- *     summary: Create a new blog
- *     description: Create a new blog in the system
+ *     summary: Create a new event
+ *     description: Create a new event in the system
  *     tags:
- *       - Blogs
+ *       - Events
  *     requestBody:
  *       required: true
  *       content:
- *         multipart/form-data:
+ *         application/json:
  *           schema:
  *             type: object
  *             properties:
  *               title:
  *                 type: string
  *               description:
- *                 type: string
- *               content:
- *                 type: string
- *               image:
- *                 type: string
- *                 format: binary
- *               link:
  *                 type: string
  *               location:
  *                 type: string
@@ -115,48 +99,40 @@ router.get("/:id", getBlogByIdController);
  *                 format: date-time
  *     responses:
  *       201:
- *         description: Blog created successfully
+ *         description: Event created successfully
  */
 router.post(
   "/",
-  roleMiddleware(Role.ADMIN),
   authMiddleware,
-  upload.single("image"),
-  createBlogController
+  roleMiddleware(Role.ADMIN),
+  createEventController
 );
 
 /**
  * @swagger
- * /blogs/{id}:
+ * /events/{id}:
  *   put:
- *     summary: Update a blog by ID
- *     description: Update the details of an existing blog
+ *     summary: Update an event by ID
+ *     description: Update an event's details
  *     tags:
- *       - Blogs
+ *       - Events
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
- *         description: ID of the blog to update
+ *         description: ID of the event to update
  *         schema:
  *           type: integer
  *     requestBody:
  *       required: true
  *       content:
- *         multipart/form-data:
+ *         application/json:
  *           schema:
  *             type: object
  *             properties:
  *               title:
  *                 type: string
  *               description:
- *                 type: string
- *               content:
- *                 type: string
- *               image:
- *                 type: string
- *                 format: binary
- *               link:
  *                 type: string
  *               location:
  *                 type: string
@@ -165,44 +141,43 @@ router.post(
  *                 format: date-time
  *     responses:
  *       200:
- *         description: Blog updated successfully
+ *         description: Event updated successfully
  *       404:
- *         description: Blog not found
+ *         description: Event not found
  */
 router.put(
   "/:id",
   authMiddleware,
   roleMiddleware(Role.ADMIN),
-  upload.single("image"),
-  updateBlogController
+  updateEventController
 );
 
 /**
  * @swagger
- * /blogs/{id}:
+ * /events/{id}:
  *   delete:
- *     summary: Delete a blog by ID
- *     description: Delete a blog by its ID
+ *     summary: Delete an event by ID
+ *     description: Delete an event by its ID
  *     tags:
- *       - Blogs
+ *       - Events
  *     parameters:
  *       - name: id
  *         in: path
  *         required: true
- *         description: ID of the blog to delete
+ *         description: ID of the event to delete
  *         schema:
  *           type: integer
  *     responses:
  *       200:
- *         description: Blog deleted successfully
+ *         description: Event deleted successfully
  *       404:
- *         description: Blog not found
+ *         description: Event not found
  */
 router.delete(
   "/:id",
   authMiddleware,
   roleMiddleware(Role.ADMIN),
-  deleteBlogController
+  deleteEventController
 );
 
 export default router;
