@@ -36,7 +36,12 @@ export const getRegistrationByIdService = async (
 
 export const getAllRegistrationsService = async (): Promise<Registration[]> => {
   try {
-    const registrations = await prisma.registration.findMany();
+    const registrations = await prisma.registration.findMany({
+      include: {
+        user: true,
+        event: true,
+      },
+    });
     return registrations;
   } catch (error) {
     throw new AppError("Error retrieving registrations", 500);

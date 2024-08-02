@@ -13,6 +13,11 @@ const swaggerDefinition = {
         interactions and Supabase for authentication and real-time features.
     `,
   },
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
   servers: [
     {
       url: "https://blog-application-backend-wq9p.onrender.com/api",

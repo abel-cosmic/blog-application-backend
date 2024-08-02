@@ -1,11 +1,21 @@
-// multerConfig.ts
 import multer from "multer";
 import path from "path";
 import { Request } from "express";
+import fs from "fs";
+
+const uploadsDir = path.join(__dirname, "..", "uploads", "images");
+
+const ensureUploadsDirExists = () => {
+  if (!fs.existsSync(uploadsDir)) {
+    fs.mkdirSync(uploadsDir, { recursive: true });
+  }
+};
+
+ensureUploadsDirExists();
 
 const storage = multer.diskStorage({
   destination: (req: Request, file, cb) => {
-    cb(null, "uploads/images");
+    cb(null, uploadsDir);
   },
   filename: (req: Request, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -35,6 +45,6 @@ const fileFilter = (
 
 export const upload = multer({
   storage,
-  limits: { fileSize: 1024 * 1024 * 5 },
+  limits: { fileSize: 1024 * 1024 * 20 },
   fileFilter,
 });

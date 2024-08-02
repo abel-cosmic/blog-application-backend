@@ -9,7 +9,7 @@ export const authMiddleware = async (
 ) => {
   try {
     const token = req.header("Authorization")?.split(" ")[1];
-    const secret: string = process.env.JWT_SECRET as string;
+    const secret: string = process.env.SUPABASE_JWT_SECRET as string;
 
     if (!token) {
       return res.status(401).json({ msg: "No token, auth denied!" });

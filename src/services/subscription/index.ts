@@ -2,6 +2,8 @@ import { Subscription } from "@prisma/client";
 import prisma from "../../config/prisma";
 import { SubscriptionInput } from "../../types/subscription";
 import AppError from "../../utils/error/app-error";
+import { sendEmail } from "../../utils/email";
+import { getRegistrationTemplate } from "../../utils/html-templates";
 
 export const createSubscriptionService = async (
   data: SubscriptionInput
@@ -13,6 +15,12 @@ export const createSubscriptionService = async (
   if (existingSubscription) {
     throw new AppError("Subscription already exists", 400);
   }
+  const emailContent = getRegistrationTemplate({
+    name: email,
+    year: new Date().getFullYear(),
+  });
+
+  await sendEmail(email, "Welcome to Our Blog", emailContent);
   await prisma.subscription.create({
     data: {
       email,

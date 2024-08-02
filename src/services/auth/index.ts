@@ -41,7 +41,7 @@ export const registerUserService = async (
   const token = jwt.sign(
     { id: user.id, email: user.email, role: user.role },
     process.env.SUPABASE_JWT_SECRET!,
-    { expiresIn: process.env.JWT_EXPIRES }
+    { expiresIn: "1h" }
   );
 
   return token;

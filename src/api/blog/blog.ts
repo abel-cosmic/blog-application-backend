@@ -90,6 +90,8 @@ router.get("/:id", getBlogByIdController);
  *     description: Create a new blog in the system
  *     tags:
  *       - Blogs
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -119,7 +121,7 @@ router.get("/:id", getBlogByIdController);
  */
 router.post(
   "/",
-  roleMiddleware(Role.ADMIN),
+  // roleMiddleware(Role.ADMIN),
   authMiddleware,
   upload.single("image"),
   createBlogController

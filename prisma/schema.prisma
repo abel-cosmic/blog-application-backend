@@ -34,19 +34,19 @@ model Blog {
   image       String
   link        String
   location    String
-  date        DateTime
+  date        String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  author      User     @relation(fields: [authorId], references: [id])
-  authorId    Int
+  author      User?    @relation(fields: [authorId], references: [id])
+  authorId    Int?
 }
 
 model Subscription {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   createdAt DateTime @default(now())
-  userId    Int?
-  user      User?    @relation(fields: [userId], references: [id])
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Event {
@@ -54,7 +54,7 @@ model Event {
   title         String
   description   String
   location      String
-  date          DateTime
+  date          String
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   registrations Registration[]

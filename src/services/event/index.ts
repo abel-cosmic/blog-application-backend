@@ -7,7 +7,7 @@ export const createEventService = async (data: {
   title: string;
   description: string;
   location: string;
-  date: Date;
+  date: string;
 }): Promise<Event> => {
   try {
     const event = await prisma.event.create({
@@ -50,7 +50,7 @@ export const updateEventService = async (
     title?: string;
     description?: string;
     location?: string;
-    date?: Date;
+    date?: string;
   }
 ): Promise<Event> => {
   try {

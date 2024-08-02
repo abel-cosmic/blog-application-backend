@@ -6,6 +6,7 @@ import {
   getBlogById,
   updateBlog,
 } from "../../services/blog";
+import { CustomRequest } from "../../types/middleware";
 
 export const getAllBlogsController = async (req: Request, res: Response) => {
   try {
@@ -29,11 +30,14 @@ export const getBlogByIdController = async (req: Request, res: Response) => {
   }
 };
 
-export const createBlogController = async (req: Request, res: Response) => {
+export const createBlogController = async (
+  req: CustomRequest,
+  res: Response
+) => {
   try {
-    const { title, description, content, link, location, date, authorId } =
-      req.body;
-    const image = req.file?.path || "";
+    const { title, description, content, link, location, date } = req.body;
+    const image = req.file?.path || ""; // Save the path to the uploaded image
+    const authorId = (req.user as any).id;
     const blog = await createBlog({
       title,
       description,
@@ -46,10 +50,10 @@ export const createBlogController = async (req: Request, res: Response) => {
     });
     res.status(201).json(blog);
   } catch (error) {
+    console.error("Error creating blog:", error);
     res.status(500).json({ error: "Failed to create blog" });
   }
 };
-
 export const updateBlogController = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {
@@ -66,6 +70,7 @@ export const updateBlogController = async (req: Request, res: Response) => {
     });
     res.json(blog);
   } catch (error) {
+    console.error(`Error updating blog with id ${id}:`, error);
     res.status(500).json({ error: "Failed to update blog" });
   }
 };
