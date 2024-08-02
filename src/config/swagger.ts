@@ -15,7 +15,7 @@ const swaggerDefinition = {
   },
   servers: [
     {
-      url: "http://localhost:3000/api",
+      url: "https://blog-application-backend-wq9p.onrender.com/api",
       description: "API server",
     },
   ],
