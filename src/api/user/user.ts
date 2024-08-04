@@ -71,7 +71,7 @@ router.get("/", getAllUsersController);
  *       201:
  *         description: User created
  */
-router.post("/", roleMiddleware(Role.USER), createUserController);
+router.post("/", roleMiddleware(Role.ADMIN), createUserController);
 
 /**
  * @swagger

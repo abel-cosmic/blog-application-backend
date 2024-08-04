@@ -7,6 +7,7 @@ import {
   updateBlog,
 } from "../../services/blog";
 import { CustomRequest } from "../../types/middleware";
+import path from "path";
 
 export const getAllBlogsController = async (req: Request, res: Response) => {
   try {
@@ -36,17 +37,37 @@ export const createBlogController = async (
 ) => {
   try {
     const { title, description, content, link, location, date } = req.body;
-    const image = req.file?.path || ""; // Save the path to the uploaded image
-    const authorId = (req.user as any).id;
+    let image = "";
+    if (req.file) {
+      const relativePath = path.join("uploads", "images", req.file.filename);
+      image = relativePath.split(path.sep).join("/"); // Convert backslashes to forward slashes
+    }
+    // const authorId = (req.user as any).id;
+    console.log(
+      "Passed data:",
+      // authorId,
+      title,
+      description,
+      content,
+      link,
+      image,
+      location,
+      date
+    );
+
+    if (!title || !description || !content || !link || !location || !date) {
+      return res.status(400).json({ error: "All fields are required" });
+    }
+
     const blog = await createBlog({
       title,
       description,
       content,
-      image,
+      image: "http://localhost:3000/" + image,
       link,
       location,
       date,
-      authorId: Number(authorId),
+      authorId: 11,
     });
     res.status(201).json(blog);
   } catch (error) {
@@ -54,6 +75,7 @@ export const createBlogController = async (
     res.status(500).json({ error: "Failed to create blog" });
   }
 };
+
 export const updateBlogController = async (req: Request, res: Response) => {
   const { id } = req.params;
   try {

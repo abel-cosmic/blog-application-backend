@@ -122,7 +122,7 @@ router.get("/:id", getBlogByIdController);
 router.post(
   "/",
   // roleMiddleware(Role.ADMIN),
-  authMiddleware,
+  // authMiddleware,
   upload.single("image"),
   createBlogController
 );
@@ -202,8 +202,8 @@ router.put(
  */
 router.delete(
   "/:id",
-  authMiddleware,
-  roleMiddleware(Role.ADMIN),
+  // authMiddleware,
+  // roleMiddleware(Role.ADMIN),
   deleteBlogController
 );
 
