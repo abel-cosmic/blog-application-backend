@@ -13,7 +13,7 @@ export const createSubscriptionController = async (
   res: Response
 ) => {
   try {
-    const { email } = req.body as SubscriptionInput;
+    const { email } = req.body;
 
     if (!email) {
       throw new AppError("Email is required", 400);

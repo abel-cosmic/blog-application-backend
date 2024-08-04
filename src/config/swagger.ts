@@ -20,7 +20,7 @@ const swaggerDefinition = {
   ],
   servers: [
     {
-      url: "http://localhost:3000/api",
+      url: process.env.EXPRESS_URL + "api/",
       description: "API server",
     },
   ],

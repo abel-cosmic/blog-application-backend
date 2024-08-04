@@ -40,20 +40,8 @@ export const createBlogController = async (
     let image = "";
     if (req.file) {
       const relativePath = path.join("uploads", "images", req.file.filename);
-      image = relativePath.split(path.sep).join("/"); // Convert backslashes to forward slashes
+      image = relativePath.split(path.sep).join("/");
     }
-    // const authorId = (req.user as any).id;
-    console.log(
-      "Passed data:",
-      // authorId,
-      title,
-      description,
-      content,
-      link,
-      image,
-      location,
-      date
-    );
 
     if (!title || !description || !content || !link || !location || !date) {
       return res.status(400).json({ error: "All fields are required" });
@@ -63,7 +51,7 @@ export const createBlogController = async (
       title,
       description,
       content,
-      image: "http://localhost:3000/" + image,
+      image: process.env.EXPRESS_URL + image,
       link,
       location,
       date,
