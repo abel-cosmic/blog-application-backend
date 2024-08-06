@@ -47,6 +47,8 @@ export const createBlogController = async (
       return res.status(400).json({ error: "All fields are required" });
     }
 
+    const authorId = req.user?.id;
+
     const blog = await createBlog({
       title,
       description,
@@ -55,7 +57,7 @@ export const createBlogController = async (
       link,
       location,
       date,
-      authorId: 11,
+      authorId,
     });
     res.status(201).json(blog);
   } catch (error) {
